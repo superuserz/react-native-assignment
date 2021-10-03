@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewContactScreen from './components/screens/NewContactScreen'
 import { init } from './components/helpers/db'
-import { verifyData } from './components/helpers/db'
 
 
 init().then(() => {

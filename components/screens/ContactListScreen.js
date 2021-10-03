@@ -55,45 +55,29 @@ function ContactListScreen({ navigation }) {
                             {item.name}
                         </Text>
                     </View>
-
                 </View>
-
                 <ItemSeparatorView />
             </View>
         );
     };
 
-    //Function For Click on an item
     const getItem = (contact) => {
         alert('Name : ' + contact.name + ' Mobile : ' + contact.mobile + ' Landline : ' + contact.landline);
     };
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <View>
                 <View style={styles.flexNavbarContainer}>
                     <Button title="Add New Contact" onPress={navigate} />
                 </View>
-
                 <View style={styles.container}>
-                    {/* List Item as a function */}
                     <ScrollView>
                         {
-                            //Loop of JS which is like foreach loop
                             contacts.map(contactsView)
                         }
                     </ScrollView>
                 </View>
-
-                {/* {<View style={styles.contactsContainer}>
-                    <Contacts contact={contacts}></Contacts>
-                </View>} */}
-                {/* <View style={styles.contactsContainer}>
-                <Text>{JSON.stringify(contacts)}</Text>
-            </View> */}
-                {/* <View>
-                <Text>{JSON.stringify(list)}</Text>
-            </View> */}
             </View>
         </SafeAreaView>
 
@@ -116,8 +100,8 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end', //pushing new contact to right
     },
     itemStyle: {
-        padding: 10,
-        fontSize: 20
+        padding: 15,
+        fontSize: 25
     },
     itemSeparatorStyle: {
         height: 20,
