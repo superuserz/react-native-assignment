@@ -1,26 +1,29 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
-
-// This Screen will consist of a Form
-// to create a New Contact and associate and Image with that Contact.
+import { insertData } from '../helpers/db'
+import { retrieveData } from '../helpers/db'
 
 function NewContact() {
 
-    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const [mobile, setMobile] = useState('');
     const [landline, setLandline] = useState('');
+    const [resultSet, setResultSet] = useState([]);
 
-    const handlePress = () => {
-        console.log(name);
-        console.log(mobile);
-        console.log(landline);
+    const handlePress = async () => {
+        const insertResult = await insertData(username, mobile, landline).then(() => {
+        }).catch(err => {
+        })
+
+        const retrieveresult = await retrieveData();
+        setResultSet(retrieveresult.rows._array);
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.inputWrapper}>
                 <Text style={styles.inputLabel}>Name</Text>
-                <TextInput style={styles.input} placeholder="Enter Name" onChangeText={(e) => setName(e)}></TextInput>
+                <TextInput style={styles.input} placeholder="Enter Name" onChangeText={(e) => setUsername(e)}></TextInput>
             </View>
             <View style={styles.inputWrapper}>
                 <Text style={styles.inputLabel}>Mobile</Text>
@@ -33,14 +36,17 @@ function NewContact() {
             <View>
                 <Button title="ADD" onPress={handlePress} />
             </View>
-        </View>
+            <View>
+                <Text>Debug Text (can be disabled later. Only for Illustration Demo Purpose)</Text>
+            </View>
+            <View>
+                <Text> {JSON.stringify(resultSet[resultSet.length - 1])}</Text>
+            </View>
+
+        </View >
     );
 }
-
 export default NewContact;
-
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
