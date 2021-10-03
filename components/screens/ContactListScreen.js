@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
-import { Button, StyleSheet, View, Text, ScrollView } from 'react-native'
+import { Button, StyleSheet, View, Text, ScrollView, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Contacts from '../contact/Contacts';
 import { retrieveData } from '../helpers/db'
@@ -46,11 +46,18 @@ function ContactListScreen({ navigation }) {
         return (
             // Flat List Item
             <View key={key}>
-                <Text
-                    style={styles.itemStyle}
-                    onPress={() => getItem(item)}>
-                    {item.name}
-                </Text>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', maxHeight: 100, }}>
+                    {<Image source={{ uri: item.imageUri }} style={{ width: 50, height: 50, borderRadius: 50, borderWidth: 3 }} />}
+                    <View>
+                        <Text
+                            style={styles.itemStyle}
+                            onPress={() => getItem(item)}>
+                            {item.name}
+                        </Text>
+                    </View>
+
+                </View>
+
                 <ItemSeparatorView />
             </View>
         );
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
 
     },
     contactsContainer: {
-        borderWidth: 1,
+        // borderWidth: 1,
         backgroundColor: 'white',
         justifyContent: 'flex-end', //pushing new contact to right
     },
@@ -113,9 +120,10 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     itemSeparatorStyle: {
-        height: 0.5,
+        height: 20,
         width: '100%',
-        backgroundColor: '#C8C8C8',
+        // backgroundColor: '#C8C8C8',
+        backgroundColor: 'white',
     },
 
 });
