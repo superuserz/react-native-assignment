@@ -7,6 +7,7 @@ const dbInitQuery = 'CREATE TABLE IF NOT EXISTS contacts ( id INTEGER PRIMARY KE
 const tableInitQuery = `INSERT INTO contacts (name,mobile,landline) VALUES (? ,? , ?)`;
 const dbShowTableQuery = "SELECT name FROM sqlite_master WHERE type='table' AND name='contacts'";
 const retrieveDataQuery = "SELECT name,mobile,landline,imageUri FROM contacts";
+const deleteAllDataQuery = "DELETE FROM contacts";
 
 export const init = () => {
     const promise = new Promise((resolve, reject) => {

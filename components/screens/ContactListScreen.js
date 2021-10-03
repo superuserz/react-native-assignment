@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
-import { Button, StyleSheet, View, Text } from 'react-native'
+import { Button, StyleSheet, View, Text, ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Contacts from '../contact/Contacts';
 import { retrieveData } from '../helpers/db'
 
@@ -19,8 +20,8 @@ function ContactListScreen({ navigation }) {
 
                 for (let i = 0; i < result.rows._array.length; i++) {
                     list.push(
-                        <View style={styles.contactsContainer} key={i}>
-                            <Text>{result.rows._array.name}</Text>
+                        <View style={styles.flexNavbarContainer} key={i}>
+                            <Text>{result.rows._array}</Text>
                         </View>
                     );
                 }
@@ -34,20 +35,61 @@ function ContactListScreen({ navigation }) {
         return onFocus;
     }, [])
 
-    return (
-        <View>
-            <View style={styles.flexNavbarContainer}>
-                <Button title="Add New Contact" onPress={navigate} />
+    const ItemSeparatorView = () => {
+        return (
+            // Flat List Item Separator
+            <View style={styles.itemSeparatorStyle} />
+        );
+    };
+
+    const contactsView = (item, key) => {
+        return (
+            // Flat List Item
+            <View key={key}>
+                <Text
+                    style={styles.itemStyle}
+                    onPress={() => getItem(item)}>
+                    {item.name}
+                </Text>
+                <ItemSeparatorView />
             </View>
-            {/* <View style={styles.contactsContainer}>
-                <Contacts contact={contacts}></Contacts>
-            </View> */}
-            {/* <View style={styles.contactsContainer}>
+        );
+    };
+
+    //Function For Click on an item
+    const getItem = (contact) => {
+        alert('Name : ' + contact.name + ' Mobile : ' + contact.mobile + ' Landline : ' + contact.landline);
+    };
+
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <View>
+                <View style={styles.flexNavbarContainer}>
+                    <Button title="Add New Contact" onPress={navigate} />
+                </View>
+
+                <View style={styles.container}>
+                    {/* List Item as a function */}
+                    <ScrollView>
+                        {
+                            //Loop of JS which is like foreach loop
+                            contacts.map(contactsView)
+                        }
+                    </ScrollView>
+                </View>
+
+                {/* {<View style={styles.contactsContainer}>
+                    <Contacts contact={contacts}></Contacts>
+                </View>} */}
+                {/* <View style={styles.contactsContainer}>
                 <Text>{JSON.stringify(contacts)}</Text>
             </View> */}
-            {list}
+                {/* <View>
+                <Text>{JSON.stringify(list)}</Text>
+            </View> */}
+            </View>
+        </SafeAreaView>
 
-        </View>
 
     )
 }
@@ -55,6 +97,9 @@ function ContactListScreen({ navigation }) {
 export default ContactListScreen
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'white',
+    },
     flexNavbarContainer: {
 
     },
@@ -62,6 +107,15 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         backgroundColor: 'white',
         justifyContent: 'flex-end', //pushing new contact to right
-    }
+    },
+    itemStyle: {
+        padding: 10,
+        fontSize: 20
+    },
+    itemSeparatorStyle: {
+        height: 0.5,
+        width: '100%',
+        backgroundColor: '#C8C8C8',
+    },
 
 });
