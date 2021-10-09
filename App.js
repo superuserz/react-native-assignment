@@ -5,6 +5,7 @@ import StarredContactListScreen from './components/screens/StarredContactsListSc
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewContactScreen from './components/screens/NewContactScreen'
+import UpdateContactScreen from './components/screens/UpdateContactScreen'
 import { init } from './components/helpers/db'
 import { Ionicons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -42,6 +43,13 @@ export default function App() {
           component={StarredContactListScreen}
           options={({ navigation }) => ({
             title: 'Starred Contacts'
+          })}
+        />
+        <Stack.Screen
+          name="UpdateContactScreen"
+          component={UpdateContactScreen}
+          options={({ navigation }) => ({
+            title: 'Update Contact'
           })}
         />
       </Stack.Navigator>

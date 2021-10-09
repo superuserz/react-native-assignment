@@ -3,9 +3,13 @@ import { StyleSheet, Text, TextInput, View, Image, Button } from 'react-native'
 import { insertData } from '../helpers/db'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
+import { retrieveDataByContactId } from '../helpers/db'
+import { updateDataByContactId } from '../helpers/db'
 
-function NewContact({ navigation, route }) {
+function UpdateContactScreen({ navigation, route }) {
 
+    const id = route.params.id;
+    console.log(id);
     const [username, setUsername] = useState('');
     const [mobile, setMobile] = useState('');
     const [landline, setLandline] = useState('');
@@ -48,11 +52,27 @@ function NewContact({ navigation, route }) {
         })();
     }, []);
 
+    useEffect(() => {
+        const onFocus = navigation.addListener('focus', () => {
+            console.log('On update Screen!');
+            retrieveDataByContactId(id).then((result) => {
+                console.log(result);
+                if (result.rows._array[0].imageUri) {
+                    setImage(result.rows._array[0].imageUri)
+                }
+                setUsername(result.rows._array[0].name);
+                setMobile(result.rows._array[0].mobile);
+                setLandline(result.rows._array[0].landline);
+                setStarred(result.rows._array[0].starred === 1 ? true : false);
+            })
+        });
+        return onFocus;
+    }, [])
+
     const handlePress = async () => {
-        const insertResult = await insertData(username, mobile, landline, image, starred).then(() => {
-        }).catch(err => {
+        updateDataByContactId(id, username, mobile, landline, image, starred).then((result) => {
+            navigation.navigate('ContactListScreen');
         })
-        navigation.navigate('ContactListScreen')
     }
 
     const pickImage = async () => {
@@ -83,27 +103,24 @@ function NewContact({ navigation, route }) {
             </View>
             <View style={styles.inputWrapper}>
                 <Text style={styles.inputLabel}>Name</Text>
-                <TextInput returnKeyType='done' clearButtonMode='always' style={styles.input} placeholder="Enter Name" onChangeText={(e) => setUsername(e)}></TextInput>
+                <TextInput value={username} returnKeyType='done' clearButtonMode='always' style={styles.input} placeholder="Enter Name" onChangeText={(e) => setUsername(e)}></TextInput>
             </View>
             <View style={styles.inputWrapper}>
                 <Text style={styles.inputLabel}>Mobile</Text>
-                <TextInput clearButtonMode='always' maxLength={10} keyboardType='phone-pad' style={styles.input} placeholder="Enter Mobile Number" onChangeText={(e) => setMobile(e)}></TextInput>
+                <TextInput value={mobile} clearButtonMode='always' maxLength={10} keyboardType='phone-pad' style={styles.input} placeholder="Enter Mobile Number" onChangeText={(e) => setMobile(e)}></TextInput>
             </View>
             <View style={styles.inputWrapper}>
                 <Text style={styles.inputLabel}>Landline</Text>
-                <TextInput clearButtonMode='always' maxLength={10} keyboardType='phone-pad' style={styles.input} placeholder="Enter Landline Number" onChangeText={(e) => setLandline(e)}></TextInput>
+                <TextInput value={landline} clearButtonMode='always' maxLength={10} keyboardType='phone-pad' style={styles.input} placeholder="Enter Landline Number" onChangeText={(e) => setLandline(e)}></TextInput>
             </View>
             <View>
                 <Button
                     onPress={handlePress}
                     name="md-checkmark-done-circle-outline"
-                    title="Add Contact"
+                    title="Update Contact"
                     style={{ alignSelf: 'center' }}
                 />
             </View>
-            {/* <View>
-                <Text>Debug Text (can be disabled later. Only for Illustration Demo Purpose)</Text>
-            </View> */}
             <View>
                 <Text> {JSON.stringify(resultSet[resultSet.length - 1])}</Text>
             </View>
@@ -111,7 +128,7 @@ function NewContact({ navigation, route }) {
         </View >
     );
 }
-export default NewContact;
+export default UpdateContactScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,

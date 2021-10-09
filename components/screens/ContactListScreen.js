@@ -52,14 +52,14 @@ function ContactListScreen({ navigation }) {
 
     const ItemSeparatorView = () => {
         return (
-            // Flat List Item Separator
             <View style={styles.itemSeparatorStyle} />
         );
     };
 
-    const navigatetoUpdateScreen = () => {
-        alert('TODO : Navigate to Update Screen');
-    };
+    const navigateToUpdateScreen = (contactId) => {
+        console.log('Navigating to update screem');
+        navigation.navigate('UpdateContactScreen', { action: 'UPDATE', id: contactId });
+    }
 
     const contactsView = (item, key) => {
         return (
@@ -79,7 +79,7 @@ function ContactListScreen({ navigation }) {
                             style={{ justifyContent: 'center', alignSelf: 'center', marginRight: 20 }}
                             name='md-pencil'
                             size={25}
-                            onPress={navigatetoUpdateScreen}
+                            onPress={() => { navigateToUpdateScreen(item.id) }}
                         />
                         <Ionicons
                             style={{ justifyContent: 'center', alignSelf: 'center' }}
@@ -95,7 +95,7 @@ function ContactListScreen({ navigation }) {
     };
 
     const getItem = (contact) => {
-        alert('Name : ' + contact.name + ' Mobile : ' + contact.mobile + ' Landline : ' + contact.landline + ' Favourite : ' + contact.starred);
+        alert('ID : ' + contact.id + ' Name : ' + contact.name + ' Mobile : ' + contact.mobile + ' Landline : ' + contact.landline + ' Favourite : ' + contact.starred);
     };
     const navigateToStarredContacts = () => {
         navigation.navigate('StarredContactListScreen');
