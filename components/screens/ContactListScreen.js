@@ -16,7 +16,7 @@ function ContactListScreen({ navigation }) {
             headerRight: () => (
                 <Ionicons
                     onPress={() => navigation.navigate(SCREENS.NEW_CONTACT_SCREEN)}
-                    name="md-create-sharp"
+                    name="md-create-outline"
                     size={30}
                 />
             ),
@@ -35,7 +35,7 @@ function ContactListScreen({ navigation }) {
 
                 for (let i = 0; i < result.rows._array.length; i++) {
                     list.push(
-                        <View style={styles.flexNavbarContainer} key={i}>
+                        <View key={i}>
                             <Text>{result.rows._array}</Text>
                         </View>
                     );
@@ -62,13 +62,12 @@ function ContactListScreen({ navigation }) {
 
     const contactsView = (item, key) => {
         return (
-            // Flat List Item
             <View key={key}>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space', maxHeight: 100 }}>
-                    {<Image source={{ uri: item.imageUri }} style={{ width: 50, height: 50, borderRadius: 50, }} />}
+                    {<Image source={{ uri: item.imageUri }} style={{ width: 50, height: 50, borderRadius: 50, marginTop: 8 }} />}
                     <View>
                         <Text
-                            style={styles.itemStyle}
+                            style={styles.contactLabel}
                             onPress={() => viewContact(item)}>
                             {item.name}
                         </Text>
@@ -104,7 +103,7 @@ function ContactListScreen({ navigation }) {
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <View>
                 <Button title="View Starred Contacts" onPress={navigateToStarredContacts} />
-                <View style={styles.container}>
+                <View style={styles.scrollViewContainer}>
                     <ScrollView>
                         {
                             contacts.map(contactsView)
@@ -121,26 +120,23 @@ function ContactListScreen({ navigation }) {
 export default ContactListScreen
 
 const styles = StyleSheet.create({
-    container: {
+    scrollViewContainer: {
         backgroundColor: 'white',
+        width: '100%',
+        paddingLeft: '5%',
+        paddingRight: '5%',
+        paddingTop: '2%'
     },
-    flexNavbarContainer: {
-
-    },
-    contactsContainer: {
-        // borderWidth: 1,
-        backgroundColor: 'white',
-        justifyContent: 'flex-end', //pushing new contact to right
-    },
-    itemStyle: {
+    contactLabel: {
         padding: 15,
         fontSize: 25
     },
     itemSeparatorStyle: {
-        height: 20,
+        height: 5,
         width: '100%',
-        // backgroundColor: '#C8C8C8',
         backgroundColor: 'white',
+        borderBottomWidth: 1,
+        borderBottomColor: '#c0c0c0'
     },
 
 });
