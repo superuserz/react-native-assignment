@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewContactScreen from './components/screens/NewContactScreen'
 import { init } from './components/helpers/db'
-import { Button } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
 
@@ -29,7 +28,7 @@ export default function App() {
               <Ionicons
                 onPress={() => navigation.navigate('NewContactScreen')}
                 name="md-create-sharp"
-                size={20}
+                size={30}
               />
             ),
           })}
@@ -38,14 +37,7 @@ export default function App() {
           name="NewContactScreen"
           component={NewContactScreen}
           options={({ navigation }) => ({
-            title: 'Add Contact',
-            // headerRight: () => (
-            //   <Ionicons
-            //     onPress={(options) => alert('Pressed')}
-            //     name="md-star-outline"
-            //     size={20}
-            //   />
-            // ),
+            title: 'Add Contact'
           })}
         />
       </Stack.Navigator>

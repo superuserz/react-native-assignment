@@ -10,10 +10,6 @@ function ContactListScreen({ navigation }) {
 
     const [contacts, setContacts] = useState([])
     var list = [];
-    const navigate = () => {
-        console.log('Will be Navigating to New Contact List now.');
-        navigation.navigate('NewContactScreen')
-    }
     useEffect(() => {
         const onFocus = navigation.addListener('focus', () => {
             console.log('Refreshed!');

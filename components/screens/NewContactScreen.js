@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Button, StyleSheet, Text, TextInput, View, Image } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Image } from 'react-native'
 import { insertData } from '../helpers/db'
-import { retrieveData } from '../helpers/db'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -20,7 +19,7 @@ function NewContact({ navigation }) {
                 <Ionicons
                     onPress={toggleFav}
                     name={starred ? 'md-star-sharp' : 'md-star-outline'}
-                    size={20}
+                    size={30}
                 />
             )
         })
@@ -63,8 +62,6 @@ function NewContact({ navigation }) {
             aspect: [4, 3],
             quality: 1,
         });
-
-        console.log(result);
 
         if (!result.cancelled) {
             setImage(result.uri);
