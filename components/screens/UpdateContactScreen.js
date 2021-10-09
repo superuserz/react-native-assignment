@@ -23,6 +23,7 @@ function UpdateContactScreen({ navigation, route }) {
                     name={starred ? 'md-star-sharp' : 'md-star-outline'}
                     color={starred ? 'orange' : 'black'}
                     size={30}
+                    style={{ marginRight: 20 }}
                 />
             )
         })

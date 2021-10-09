@@ -18,12 +18,15 @@ function ContactListScreen({ navigation }) {
                     onPress={() => navigation.navigate(SCREENS.NEW_CONTACT_SCREEN)}
                     name="md-create-outline"
                     size={30}
+                    style={{ marginRight: 20 }}
                 />
             ),
             headerLeft: () => (
                 <Ionicons
                     name="md-menu-sharp"
                     size={30}
+                    style={{ marginLeft: 20 }}
+                    onPress={() => navigation.openDrawer()}
                 />
             )
         })
@@ -99,7 +102,7 @@ function ContactListScreen({ navigation }) {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <View>
-                <Button title="View Starred Contacts" onPress={navigateToStarredContacts} />
+                {/* <Button title="View Starred Contacts" onPress={navigateToStarredContacts} /> */}
                 <View style={styles.scrollViewContainer}>
                     <ScrollView>
                         {
@@ -109,8 +112,6 @@ function ContactListScreen({ navigation }) {
                 </View>
             </View>
         </SafeAreaView>
-
-
     )
 }
 
