@@ -1,55 +1,49 @@
 import * as React from 'react';
+import * as SCREENS from './components/helpers/Screens'
 import { StyleSheet } from 'react-native';
-import ContactListScreen from './components/screens/ContactListScreen';
-import StarredContactListScreen from './components/screens/StarredContactsListScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { init } from './components/helpers/db'
+import ContactListScreen from './components/screens/ContactListScreen';
 import NewContactScreen from './components/screens/NewContactScreen'
 import UpdateContactScreen from './components/screens/UpdateContactScreen'
-import { init } from './components/helpers/db'
-import { Ionicons } from '@expo/vector-icons';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-
+import StarredContactListScreen from './components/screens/StarredContactsListScreen';
 
 init().then(() => {
-  console.log('Initialized DB')
 }).catch(err => {
-  console.log(err);
 })
-
 
 export default function App() {
   const Stack = createNativeStackNavigator();
-  const Drawer = createDrawerNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="ContactListScreen"
+          name={SCREENS.CONTACT_LIST_SCREEN}
           component={ContactListScreen}
           options={({ navigation }) => ({
-            title: 'Contacts',
+            title: SCREENS.CONTACT_LIST_SCREEN_TITLE
           })}
         />
         <Stack.Screen
-          name="NewContactScreen"
+          name={SCREENS.NEW_CONTACT_SCREEN}
           component={NewContactScreen}
           options={({ navigation }) => ({
-            title: 'Add Contact'
+            title: SCREENS.NEW_CONTACT_SCREEN_TITLE
           })}
         />
         <Stack.Screen
-          name="StarredContactListScreen"
+          name={SCREENS.STARRED_CONTACT_LIST_SCREEN}
           component={StarredContactListScreen}
           options={({ navigation }) => ({
-            title: 'Starred Contacts'
+            title: SCREENS.STARRED_CONTACT_LIST_SCREEN_TITLE
           })}
         />
         <Stack.Screen
-          name="UpdateContactScreen"
+          name={SCREENS.UPDATE_CONTACT_SCREEN}
           component={UpdateContactScreen}
           options={({ navigation }) => ({
-            title: 'Update Contact'
+            title: SCREENS.UPDATE_CONTACT_SCREEN_TITLE
           })}
         />
       </Stack.Navigator>
@@ -60,7 +54,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start', //bring new contact button container to top
+    justifyContent: 'flex-start',
     borderWidth: 1,
     backgroundColor: 'white',
     marginTop: 50,

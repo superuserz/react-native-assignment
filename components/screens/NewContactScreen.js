@@ -1,15 +1,14 @@
+import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TextInput, View, Image, Button } from 'react-native'
 import { insertData } from '../helpers/db'
-import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 
-function NewContact({ navigation, route }) {
+function NewContact({ navigation }) {
 
     const [username, setUsername] = useState('');
     const [mobile, setMobile] = useState('');
     const [landline, setLandline] = useState('');
-    const [resultSet, setResultSet] = useState([]);
     const [image, setImage] = useState(null);
     const [starred, setStarred] = useState(false);
 
@@ -49,10 +48,22 @@ function NewContact({ navigation, route }) {
     }, []);
 
     const handlePress = async () => {
-        const insertResult = await insertData(username, mobile, landline, image, starred).then(() => {
-        }).catch(err => {
-        })
-        navigation.navigate('ContactListScreen')
+        let isValidForm = true;
+        if (!username) {
+            isValidForm = false;
+            alert('Please Provide Name');
+        } else if (!mobile) {
+            isValidForm = false;
+            alert('Please Enter Mobile Number');
+        }
+
+        if (isValidForm) {
+            const insertResult = await insertData(username, mobile, landline, image, starred).then(() => {
+            }).catch(err => {
+            })
+            navigation.navigate('ContactListScreen')
+        }
+
     }
 
     const pickImage = async () => {
@@ -101,13 +112,6 @@ function NewContact({ navigation, route }) {
                     style={{ alignSelf: 'center' }}
                 />
             </View>
-            {/* <View>
-                <Text>Debug Text (can be disabled later. Only for Illustration Demo Purpose)</Text>
-            </View> */}
-            <View>
-                <Text> {JSON.stringify(resultSet[resultSet.length - 1])}</Text>
-            </View>
-
         </View >
     );
 }

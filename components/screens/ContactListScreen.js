@@ -4,6 +4,7 @@ import { Button, StyleSheet, View, Text, ScrollView, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { retrieveData } from '../helpers/db'
 import { Ionicons } from '@expo/vector-icons';
+import * as SCREENS from '../helpers/Screens'
 
 function ContactListScreen({ navigation }) {
 
@@ -14,7 +15,7 @@ function ContactListScreen({ navigation }) {
         navigation.setOptions({
             headerRight: () => (
                 <Ionicons
-                    onPress={() => navigation.navigate('NewContactScreen')}
+                    onPress={() => navigation.navigate(SCREENS.NEW_CONTACT_SCREEN)}
                     name="md-create-sharp"
                     size={30}
                 />
@@ -30,7 +31,6 @@ function ContactListScreen({ navigation }) {
 
     useEffect(() => {
         const onFocus = navigation.addListener('focus', () => {
-            console.log('Refreshed!');
             retrieveData().then((result) => {
 
                 for (let i = 0; i < result.rows._array.length; i++) {
@@ -57,8 +57,7 @@ function ContactListScreen({ navigation }) {
     };
 
     const navigateToUpdateScreen = (contactId) => {
-        console.log('Navigating to update screem');
-        navigation.navigate('UpdateContactScreen', { action: 'UPDATE', id: contactId });
+        navigation.navigate(SCREENS.UPDATE_CONTACT_SCREEN, { id: contactId });
     }
 
     const contactsView = (item, key) => {
@@ -70,7 +69,7 @@ function ContactListScreen({ navigation }) {
                     <View>
                         <Text
                             style={styles.itemStyle}
-                            onPress={() => getItem(item)}>
+                            onPress={() => viewContact(item)}>
                             {item.name}
                         </Text>
                     </View>
@@ -94,11 +93,11 @@ function ContactListScreen({ navigation }) {
         );
     };
 
-    const getItem = (contact) => {
-        alert('ID : ' + contact.id + ' Name : ' + contact.name + ' Mobile : ' + contact.mobile + ' Landline : ' + contact.landline + ' Favourite : ' + contact.starred);
+    const viewContact = (contact) => {
+        navigation.navigate(SCREENS.UPDATE_CONTACT_SCREEN, { id: contact.id });
     };
     const navigateToStarredContacts = () => {
-        navigation.navigate('StarredContactListScreen');
+        navigation.navigate(SCREENS.STARRED_CONTACT_LIST_SCREEN);
     }
 
     return (

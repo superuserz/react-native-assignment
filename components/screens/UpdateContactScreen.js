@@ -1,15 +1,14 @@
+import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TextInput, View, Image, Button } from 'react-native'
-import { insertData } from '../helpers/db'
-import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-import { retrieveDataByContactId } from '../helpers/db'
+import { getContactById } from '../helpers/db'
 import { updateDataByContactId } from '../helpers/db'
+import { deleteContactByContactId } from '../helpers/db'
 
 function UpdateContactScreen({ navigation, route }) {
 
     const id = route.params.id;
-    console.log(id);
     const [username, setUsername] = useState('');
     const [mobile, setMobile] = useState('');
     const [landline, setLandline] = useState('');
@@ -54,9 +53,7 @@ function UpdateContactScreen({ navigation, route }) {
 
     useEffect(() => {
         const onFocus = navigation.addListener('focus', () => {
-            console.log('On update Screen!');
-            retrieveDataByContactId(id).then((result) => {
-                console.log(result);
+            getContactById(id).then((result) => {
                 if (result.rows._array[0].imageUri) {
                     setImage(result.rows._array[0].imageUri)
                 }
@@ -70,9 +67,21 @@ function UpdateContactScreen({ navigation, route }) {
     }, [])
 
     const handlePress = async () => {
-        updateDataByContactId(id, username, mobile, landline, image, starred).then((result) => {
-            navigation.navigate('ContactListScreen');
-        })
+        let isValidForm = true;
+        if (!username) {
+            isValidForm = false;
+            alert('Please Provide Name');
+        }
+        if (!mobile) {
+            isValidForm = false;
+            alert('Please Enter Mobile Number');
+        }
+        if (isValidForm) {
+            updateDataByContactId(id, username, mobile, landline, image, starred).then((result) => {
+                navigation.navigate('ContactListScreen');
+            })
+        }
+
     }
 
     const pickImage = async () => {
@@ -86,6 +95,13 @@ function UpdateContactScreen({ navigation, route }) {
         if (!result.cancelled) {
             setImage(result.uri);
         }
+    }
+
+    const handleDeleteAction = () => {
+        deleteContactByContactId(id).then((result) => {
+            alert('Contact Deleted');
+            navigation.navigate('ContactListScreen');
+        })
     }
 
     return (
@@ -103,7 +119,7 @@ function UpdateContactScreen({ navigation, route }) {
             </View>
             <View style={styles.inputWrapper}>
                 <Text style={styles.inputLabel}>Name</Text>
-                <TextInput value={username} returnKeyType='done' clearButtonMode='always' style={styles.input} placeholder="Enter Name" onChangeText={(e) => setUsername(e)}></TextInput>
+                <TextInput value={username} clearButtonMode='always' style={styles.input} placeholder="Enter Name" onChangeText={(e) => setUsername(e)}></TextInput>
             </View>
             <View style={styles.inputWrapper}>
                 <Text style={styles.inputLabel}>Mobile</Text>
@@ -116,8 +132,14 @@ function UpdateContactScreen({ navigation, route }) {
             <View>
                 <Button
                     onPress={handlePress}
-                    name="md-checkmark-done-circle-outline"
                     title="Update Contact"
+                    style={{ alignSelf: 'center' }}
+                />
+            </View>
+            <View>
+                <Button
+                    onPress={handleDeleteAction}
+                    title="Delete Contact"
                     style={{ alignSelf: 'center' }}
                 />
             </View>

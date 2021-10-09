@@ -85,7 +85,7 @@ export const retrieveStarredContacts = () => {
     return promise;
 };
 
-export const retrieveDataByContactId = (id) => {
+export const getContactById = (id) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(QUERY.GET_CONTACT_BY_ID,
@@ -107,6 +107,22 @@ export const updateDataByContactId = (id, name, mobile, landline, imageUri, star
         db.transaction((tx) => {
             tx.executeSql(QUERY.UPDATE_CONTACT_BY_ID,
                 [name, mobile, landline, imageUri, flag, id],
+                (_, resultSet) => {
+                    resolve(resultSet);
+                },
+                (_, err) => {
+                    reject(err);
+                });
+        })
+    })
+    return promise;
+};
+
+export const deleteContactByContactId = (id) => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(QUERY.DELETE_CONTACT_BY_ID,
+                [id],
                 (_, resultSet) => {
                     resolve(resultSet);
                 },

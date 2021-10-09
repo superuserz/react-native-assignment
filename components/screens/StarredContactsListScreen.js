@@ -13,7 +13,6 @@ function StarredContactListScreen({ navigation }) {
 
     useEffect(() => {
         const onFocus = navigation.addListener('focus', () => {
-            console.log('Refreshed!');
             retrieveStarredContacts().then((result) => {
 
                 for (let i = 0; i < result.rows._array.length; i++) {

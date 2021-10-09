@@ -4,3 +4,4 @@ export const GET_FAVOURITE_CONTACTS = "SELECT id, name, mobile, landline, imageU
 export const GET_CONTACT_BY_ID = "SELECT id, name, mobile, landline, imageUri, starred FROM contacts where id=?";
 export const INSERT_CONTACT = "INSERT INTO contacts (name,mobile,landline, imageUri, starred) VALUES (? ,? , ?, ?, ?)";
 export const UPDATE_CONTACT_BY_ID = "UPDATE contacts SET name=?,mobile=?,landline=?, imageUri=?, starred=? WHERE id=?";
+export const DELETE_CONTACT_BY_ID = "DELETE from contacts WHERE id=?";
