@@ -9,8 +9,6 @@ import * as SCREENS from '../helpers/Screens'
 function ContactListScreen({ navigation }) {
 
     const [contacts, setContacts] = useState([])
-    var list = [];
-
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -35,14 +33,6 @@ function ContactListScreen({ navigation }) {
     useEffect(() => {
         const onFocus = navigation.addListener('focus', () => {
             retrieveData().then((result) => {
-                // for (let i = 0; i < result.rows._array.length; i++) {
-                //     list.push(
-                //         <View key={i}>
-                //             <Text>{result.rows._array}</Text>
-                //         </View>
-                //     );
-                // }
-
                 setContacts(result.rows._array);
 
             })
@@ -60,11 +50,18 @@ function ContactListScreen({ navigation }) {
         navigation.navigate(SCREENS.UPDATE_CONTACT_SCREEN, { id: contactId });
     }
 
+    const getInitials = (name) => {
+        return name.charAt(0);
+    }
+
     const contactsView = (item, key) => {
         return (
             <View key={key}>
                 <View style={{ flex: 1, flexDirection: 'row', maxHeight: 100 }}>
-                    {<Image source={{ uri: item.imageUri }} style={{ width: 50, height: 50, borderRadius: 50, marginTop: 8 }} />}
+                    {item.imageUri && <Image source={{ uri: item.imageUri }} style={styles.imageContainer} />}
+                    {!item.imageUri && <View style={styles.blankImageContainer} >
+                        <Text style={{ justifyContent: 'center', alignSelf: 'center', fontSize: 30 }}>{getInitials(item.name)}</Text>
+                    </View>}
                     <View>
                         <Text
                             style={styles.contactLabel}
@@ -136,5 +133,21 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#c0c0c0'
     },
+    imageContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        marginTop: 8
+    },
+    blankImageContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        borderWidth: 2,
+        backgroundColor: '#00796b',
+        marginTop: 8,
+        justifyContent: 'center',
+        alignSelf: 'center'
+    }
 
 });

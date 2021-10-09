@@ -129,18 +129,17 @@ function UpdateContactScreen({ navigation, route }) {
                 <Text style={styles.inputLabel}>Landline</Text>
                 <TextInput value={landline} clearButtonMode='always' maxLength={10} keyboardType='phone-pad' style={styles.input} placeholder="Enter Landline Number" onChangeText={(e) => setLandline(e)}></TextInput>
             </View>
-            <View>
+            <View style={{ alignSelf: 'center', marginTop: 20 }}>
                 <Button
                     onPress={handlePress}
                     title="Update Contact"
                     style={{ alignSelf: 'center' }}
                 />
             </View>
-            <View>
+            <View style={{ alignSelf: 'center', marginTop: 20 }}>
                 <Button
                     onPress={handleDeleteAction}
                     title="Delete Contact"
-                    style={{ alignSelf: 'center' }}
                 />
             </View>
         </View >

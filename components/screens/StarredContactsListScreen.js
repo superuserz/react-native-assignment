@@ -8,20 +8,9 @@ import { Ionicons } from '@expo/vector-icons';
 function StarredContactListScreen({ navigation }) {
 
     const [contacts, setContacts] = useState([])
-    var list = [];
-
     useEffect(() => {
         const onFocus = navigation.addListener('focus', () => {
             retrieveStarredContacts().then((result) => {
-
-                for (let i = 0; i < result.rows._array.length; i++) {
-                    list.push(
-                        <View key={i}>
-                            <Text>{result.rows._array}</Text>
-                        </View>
-                    );
-                }
-
                 setContacts((prevData) => {
                     return result.rows._array
                 });
@@ -33,17 +22,22 @@ function StarredContactListScreen({ navigation }) {
 
     const ItemSeparatorView = () => {
         return (
-            // Flat List Item Separator
             <View style={styles.itemSeparatorStyle} />
         );
     };
 
+    const getInitials = (name) => {
+        return name.charAt(0);
+    }
+
     const contactsView = (item, key) => {
         return (
-            // Flat List Item
             <View key={key}>
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space', maxHeight: 100 }}>
-                    {<Image source={{ uri: item.imageUri }} style={{ width: 50, height: 50, borderRadius: 50, marginTop: 8 }} />}
+                <View style={{ flex: 1, flexDirection: 'row', maxHeight: 100 }}>
+                    {item.imageUri && <Image source={{ uri: item.imageUri }} style={styles.imageContainer} />}
+                    {!item.imageUri && <View style={styles.blankImageContainer} >
+                        <Text style={{ justifyContent: 'center', alignSelf: 'center', fontSize: 30 }}>{getInitials(item.name)}</Text>
+                    </View>}
                     <View>
                         <Text
                             style={styles.contactLabel}
@@ -104,6 +98,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderBottomWidth: 1,
         borderBottomColor: '#c0c0c0'
+    },
+    imageContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        marginTop: 8
+    },
+    blankImageContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        borderWidth: 2,
+        backgroundColor: '#00796b',
+        marginTop: 8,
+        justifyContent: 'center',
+        alignSelf: 'center'
     }
 
 });
