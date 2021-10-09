@@ -1,37 +1,20 @@
 
 import React, { useEffect, useState } from 'react'
-import { Button, StyleSheet, View, Text, ScrollView, Image } from 'react-native'
+import { StyleSheet, View, Text, ScrollView, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { retrieveData } from '../helpers/db'
+import { retrieveStarredContacts } from '../helpers/db'
 import { Ionicons } from '@expo/vector-icons';
 
-function ContactListScreen({ navigation }) {
+function StarredContactListScreen({ navigation }) {
 
     const [contacts, setContacts] = useState([])
     var list = [];
 
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <Ionicons
-                    onPress={() => navigation.navigate('NewContactScreen')}
-                    name="md-create-sharp"
-                    size={30}
-                />
-            ),
-            headerLeft: () => (
-                <Ionicons
-                    name="md-menu-sharp"
-                    size={30}
-                />
-            )
-        })
-    })
 
     useEffect(() => {
         const onFocus = navigation.addListener('focus', () => {
             console.log('Refreshed!');
-            retrieveData().then((result) => {
+            retrieveStarredContacts().then((result) => {
 
                 for (let i = 0; i < result.rows._array.length; i++) {
                     list.push(
@@ -57,10 +40,6 @@ function ContactListScreen({ navigation }) {
         );
     };
 
-    const navigatetoUpdateScreen = () => {
-        alert('TODO : Navigate to Update Screen');
-    };
-
     const contactsView = (item, key) => {
         return (
             // Flat List Item
@@ -76,12 +55,6 @@ function ContactListScreen({ navigation }) {
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 10, maxHeight: 100 }}>
                         <Ionicons
-                            style={{ justifyContent: 'center', alignSelf: 'center', marginRight: 20 }}
-                            name='md-pencil'
-                            size={25}
-                            onPress={navigatetoUpdateScreen}
-                        />
-                        <Ionicons
                             style={{ justifyContent: 'center', alignSelf: 'center' }}
                             name={item.starred === 1 ? 'md-star-sharp' : 'md-star-outline'}
                             color={item.starred === 1 ? 'orange' : 'black'}
@@ -89,6 +62,7 @@ function ContactListScreen({ navigation }) {
                         />
                     </View>
                 </View>
+
                 <ItemSeparatorView />
             </View >
         );
@@ -97,14 +71,10 @@ function ContactListScreen({ navigation }) {
     const getItem = (contact) => {
         alert('Name : ' + contact.name + ' Mobile : ' + contact.mobile + ' Landline : ' + contact.landline + ' Favourite : ' + contact.starred);
     };
-    const navigateToStarredContacts = () => {
-        navigation.navigate('StarredContactListScreen');
-    }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <View>
-                <Button title="View Starred Contacts" onPress={navigateToStarredContacts} />
                 <View style={styles.container}>
                     <ScrollView>
                         {
@@ -119,7 +89,7 @@ function ContactListScreen({ navigation }) {
     )
 }
 
-export default ContactListScreen
+export default StarredContactListScreen
 
 const styles = StyleSheet.create({
     container: {

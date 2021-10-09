@@ -8,8 +8,9 @@ const tableInitQuery = `INSERT INTO contacts (name,mobile,landline, imageUri, st
 const dbShowTableQuery = "SELECT name FROM sqlite_master WHERE type='table' AND name='contacts'";
 const retrieveDataQuery = "SELECT name, mobile, landline, imageUri, starred FROM contacts ORDER BY name ASC";
 const deleteAllDataQuery = "DELETE FROM contacts";
-const dropTableQuery = "DROp TABLE IF EXISTS contacts;"
-const decribleTableQuery = "PRAGMA table_info (contacts)"
+const dropTableQuery = "DROp TABLE IF EXISTS contacts;";
+const decribleTableQuery = "PRAGMA table_info (contacts)";
+const retrieveStarredContactsQuery = "SELECT name, mobile, landline, imageUri, starred FROM contacts where starred=1 ORDER BY name ASC";
 
 export const init = () => {
     const promise = new Promise((resolve, reject) => {
@@ -89,3 +90,20 @@ export const retrieveData = () => {
     })
     return promise;
 };
+
+export const retrieveStarredContacts = () => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(retrieveStarredContactsQuery,
+                [],
+                (_, resultSet) => {
+                    resolve(resultSet);
+                },
+                (_, err) => {
+                    reject(err);
+                });
+        })
+    })
+    return promise;
+};
+

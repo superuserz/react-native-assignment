@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import ContactListScreen from './components/screens/ContactListScreen';
+import StarredContactListScreen from './components/screens/StarredContactsListScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewContactScreen from './components/screens/NewContactScreen'
 import { init } from './components/helpers/db'
 import { Ionicons } from '@expo/vector-icons';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
 init().then(() => {
@@ -14,8 +16,10 @@ init().then(() => {
   console.log(err);
 })
 
+
 export default function App() {
   const Stack = createNativeStackNavigator();
+  const Drawer = createDrawerNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -24,13 +28,6 @@ export default function App() {
           component={ContactListScreen}
           options={({ navigation }) => ({
             title: 'Contacts',
-            headerRight: () => (
-              <Ionicons
-                onPress={() => navigation.navigate('NewContactScreen')}
-                name="md-create-sharp"
-                size={30}
-              />
-            ),
           })}
         />
         <Stack.Screen
@@ -40,9 +37,15 @@ export default function App() {
             title: 'Add Contact'
           })}
         />
+        <Stack.Screen
+          name="StarredContactListScreen"
+          component={StarredContactListScreen}
+          options={({ navigation }) => ({
+            title: 'Starred Contacts'
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
 
