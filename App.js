@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import ContactListScreen from './components/screens/ContactListScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewContactScreen from './components/screens/NewContactScreen'
 import { init } from './components/helpers/db'
+import { Button } from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
 
 
 init().then(() => {
@@ -21,12 +23,30 @@ export default function App() {
         <Stack.Screen
           name="ContactListScreen"
           component={ContactListScreen}
-          options={{ title: 'Contacts' }}
+          options={({ navigation }) => ({
+            title: 'Contacts',
+            headerRight: () => (
+              <Ionicons
+                onPress={() => navigation.navigate('NewContactScreen')}
+                name="md-create-sharp"
+                size={20}
+              />
+            ),
+          })}
         />
         <Stack.Screen
           name="NewContactScreen"
           component={NewContactScreen}
-          options={{ title: 'Create New Contact' }}
+          options={({ navigation }) => ({
+            title: 'Add Contact',
+            // headerRight: () => (
+            //   <Ionicons
+            //     onPress={(options) => alert('Pressed')}
+            //     name="md-star-outline"
+            //     size={20}
+            //   />
+            // ),
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>

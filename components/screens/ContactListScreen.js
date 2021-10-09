@@ -4,6 +4,7 @@ import { Button, StyleSheet, View, Text, ScrollView, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Contacts from '../contact/Contacts';
 import { retrieveData } from '../helpers/db'
+import { Ionicons } from '@expo/vector-icons';
 
 function ContactListScreen({ navigation }) {
 
@@ -46,8 +47,8 @@ function ContactListScreen({ navigation }) {
         return (
             // Flat List Item
             <View key={key}>
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', maxHeight: 100, }}>
-                    {<Image source={{ uri: item.imageUri }} style={{ width: 50, height: 50, borderRadius: 50, borderWidth: 3 }} />}
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space', maxHeight: 100 }}>
+                    {<Image source={{ uri: item.imageUri }} style={{ width: 50, height: 50, borderRadius: 50, }} />}
                     <View>
                         <Text
                             style={styles.itemStyle}
@@ -55,22 +56,27 @@ function ContactListScreen({ navigation }) {
                             {item.name}
                         </Text>
                     </View>
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 10, maxHeight: 100 }}>
+                        <Ionicons
+                            style={{ justifyContent: 'center', alignSelf: 'center' }}
+                            name={item.starred === 1 ? 'md-star-sharp' : 'md-star-outline'}
+                            size={20}
+                        />
+                    </View>
                 </View>
+
                 <ItemSeparatorView />
-            </View>
+            </View >
         );
     };
 
     const getItem = (contact) => {
-        alert('Name : ' + contact.name + ' Mobile : ' + contact.mobile + ' Landline : ' + contact.landline);
+        alert('Name : ' + contact.name + ' Mobile : ' + contact.mobile + ' Landline : ' + contact.landline + ' Favourite : ' + contact.starred);
     };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <View>
-                <View style={styles.flexNavbarContainer}>
-                    <Button title="Add New Contact" onPress={navigate} />
-                </View>
                 <View style={styles.container}>
                     <ScrollView>
                         {

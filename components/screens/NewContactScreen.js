@@ -3,15 +3,34 @@ import { Button, StyleSheet, Text, TextInput, View, Image } from 'react-native'
 import { insertData } from '../helpers/db'
 import { retrieveData } from '../helpers/db'
 import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from '@expo/vector-icons';
 
-function NewContact() {
+function NewContact({ navigation }) {
 
     const [username, setUsername] = useState('');
     const [mobile, setMobile] = useState('');
     const [landline, setLandline] = useState('');
     const [resultSet, setResultSet] = useState([]);
     const [image, setImage] = useState(null);
+    const [starred, setStarred] = useState(false);
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <Ionicons
+                    onPress={toggleFav}
+                    name={starred ? 'md-star-sharp' : 'md-star-outline'}
+                    size={20}
+                />
+            )
+        })
+    })
+
+    const toggleFav = () => {
+        setStarred((prevValue) => {
+            return !prevValue;
+        })
+    }
 
     useEffect(() => {
         (async () => {
@@ -31,12 +50,10 @@ function NewContact() {
     }, []);
 
     const handlePress = async () => {
-        const insertResult = await insertData(username, mobile, landline, image).then(() => {
+        const insertResult = await insertData(username, mobile, landline, image, starred).then(() => {
         }).catch(err => {
         })
-
-        const retrieveresult = await retrieveData();
-        setResultSet(retrieveresult.rows._array);
+        navigation.navigate('ContactListScreen')
     }
 
     const pickImage = async () => {
@@ -57,7 +74,12 @@ function NewContact() {
     return (
         <View style={styles.container}>
             <View>
-                <Button title="Select Image" onPress={pickImage} />
+                <Ionicons
+                    onPress={pickImage}
+                    name="md-image-outline"
+                    size={100}
+                    style={{ alignSelf: 'center' }}
+                />
             </View>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', maxHeight: 100 }}>
                 {image && <Image source={{ uri: image }} style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} />}
@@ -75,7 +97,12 @@ function NewContact() {
                 <TextInput style={styles.input} placeholder="Enter Landline Number" onChangeText={(e) => setLandline(e)}></TextInput>
             </View>
             <View>
-                <Button title="Create Contact" onPress={handlePress} />
+                <Ionicons
+                    onPress={handlePress}
+                    name="md-checkmark-done-circle-outline"
+                    size={100}
+                    style={{ alignSelf: 'center' }}
+                />
             </View>
             <View>
                 <Text>Debug Text (can be disabled later. Only for Illustration Demo Purpose)</Text>
