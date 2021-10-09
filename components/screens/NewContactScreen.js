@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TextInput, View, Image, Button } from 'react-native'
 import { insertData } from '../helpers/db'
 import { Ionicons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function NewContact({ navigation }) {
 
@@ -82,17 +83,16 @@ function NewContact({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View>
-                <Ionicons
-                    onPress={pickImage}
+            {!image && <View >
+                <TouchableOpacity onPress={pickImage}><Ionicons
                     name="md-image-outline"
                     size={100}
                     style={{ alignSelf: 'center' }}
-                />
-            </View>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', maxHeight: 100 }}>
-                {image && <Image source={{ uri: image }} style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} />}
-            </View>
+                /></TouchableOpacity>
+            </View>}
+            {image && <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', maxHeight: 100 }}>
+                <TouchableOpacity onPress={pickImage} style={{ marginTop: 10, marginBottom: 10 }}><Image source={{ uri: image }} style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} /></TouchableOpacity>
+            </View>}
             <View style={styles.inputWrapper}>
                 <Text style={styles.inputLabel}>Name</Text>
                 <TextInput returnKeyType='done' clearButtonMode='always' style={styles.input} placeholder="Enter Name" onChangeText={(e) => setUsername(e)}></TextInput>
