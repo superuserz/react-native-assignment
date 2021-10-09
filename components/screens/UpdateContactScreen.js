@@ -12,7 +12,6 @@ function UpdateContactScreen({ navigation, route }) {
     const [username, setUsername] = useState('');
     const [mobile, setMobile] = useState('');
     const [landline, setLandline] = useState('');
-    const [resultSet, setResultSet] = useState([]);
     const [image, setImage] = useState(null);
     const [starred, setStarred] = useState(false);
 
@@ -142,9 +141,6 @@ function UpdateContactScreen({ navigation, route }) {
                     title="Delete Contact"
                     style={{ alignSelf: 'center' }}
                 />
-            </View>
-            <View>
-                <Text> {JSON.stringify(resultSet[resultSet.length - 1])}</Text>
             </View>
         </View >
     );
