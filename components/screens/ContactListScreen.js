@@ -32,18 +32,15 @@ function ContactListScreen({ navigation }) {
     useEffect(() => {
         const onFocus = navigation.addListener('focus', () => {
             retrieveData().then((result) => {
+                // for (let i = 0; i < result.rows._array.length; i++) {
+                //     list.push(
+                //         <View key={i}>
+                //             <Text>{result.rows._array}</Text>
+                //         </View>
+                //     );
+                // }
 
-                for (let i = 0; i < result.rows._array.length; i++) {
-                    list.push(
-                        <View key={i}>
-                            <Text>{result.rows._array}</Text>
-                        </View>
-                    );
-                }
-
-                setContacts((prevData) => {
-                    return result.rows._array
-                });
+                setContacts(result.rows._array);
 
             })
         });
@@ -63,7 +60,7 @@ function ContactListScreen({ navigation }) {
     const contactsView = (item, key) => {
         return (
             <View key={key}>
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space', maxHeight: 100 }}>
+                <View style={{ flex: 1, flexDirection: 'row', maxHeight: 100 }}>
                     {<Image source={{ uri: item.imageUri }} style={{ width: 50, height: 50, borderRadius: 50, marginTop: 8 }} />}
                     <View>
                         <Text

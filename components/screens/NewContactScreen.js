@@ -60,6 +60,7 @@ function NewContact({ navigation }) {
         if (isValidForm) {
             const insertResult = await insertData(username, mobile, landline, image, starred).then(() => {
             }).catch(err => {
+                console.log(err);
             })
             navigation.navigate('ContactListScreen')
         }

@@ -41,12 +41,12 @@ export const insertData = (username, mobile, landline, image, starred) => {
         db.transaction((tx) => {
             tx.executeSql(QUERY.INSERT_CONTACT,
                 [username, mobile, landline, image, flag],
-                (tx, res) => {
+                (_, res) => {
                     resolve(res);
                 },
                 (_, err) => {
                     console.log(err);
-                    reject();
+                    reject(err);
                 });
         })
     })
