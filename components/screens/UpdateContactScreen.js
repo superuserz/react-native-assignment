@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TextInput, View, Image, Button } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Image, Button, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { getContactById } from '../helpers/db'
 import { updateDataByContactId } from '../helpers/db'
@@ -22,6 +22,7 @@ function UpdateContactScreen({ navigation, route }) {
                 <Ionicons
                     onPress={toggleFav}
                     name={starred ? 'md-star-sharp' : 'md-star-outline'}
+                    color={starred ? 'orange' : 'black'}
                     size={30}
                 />
             )
@@ -106,17 +107,16 @@ function UpdateContactScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <View>
-                <Ionicons
-                    onPress={pickImage}
+            {!image && <View >
+                <TouchableOpacity onPress={pickImage}><Ionicons
                     name="md-image-outline"
                     size={100}
                     style={{ alignSelf: 'center' }}
-                />
-            </View>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', maxHeight: 100 }}>
-                {image && <Image source={{ uri: image }} style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} />}
-            </View>
+                /></TouchableOpacity>
+            </View>}
+            {image && <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', maxHeight: 100 }}>
+                <TouchableOpacity onPress={pickImage} style={{ marginTop: 10, marginBottom: 10 }}><Image source={{ uri: image }} style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} /></TouchableOpacity>
+            </View>}
             <View style={styles.inputWrapper}>
                 <Text style={styles.inputLabel}>Name</Text>
                 <TextInput value={username} clearButtonMode='always' style={styles.input} placeholder="Enter Name" onChangeText={(e) => setUsername(e)}></TextInput>
@@ -146,7 +146,6 @@ function UpdateContactScreen({ navigation, route }) {
             <View>
                 <Text> {JSON.stringify(resultSet[resultSet.length - 1])}</Text>
             </View>
-
         </View >
     );
 }
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: 30,
         paddingRight: 30,
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
     },
     inputWrapper: {
         padding: 5,
